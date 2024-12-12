@@ -19,7 +19,7 @@ A lightweight Windows taskbar enhancement utility that provides a sleek, customi
 
 ### Build Steps
 1. Clone the repository
-git clone https://github.com/yourusername/Extendify.git
+git clone [https://github.com/idris-j/Extendify/)
 
 Open the solution in Visual Studio
 cd Extendify
