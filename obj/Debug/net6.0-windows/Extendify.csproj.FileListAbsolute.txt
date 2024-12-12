@@ -1,0 +1,14 @@
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.AssemblyInfoInputs.cache
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.AssemblyInfo.cs
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.csproj.CoreCompileInputs.cache
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\bin\Debug\net6.0-windows\Extendify.exe
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\bin\Debug\net6.0-windows\Extendify.deps.json
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\bin\Debug\net6.0-windows\Extendify.runtimeconfig.json
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\bin\Debug\net6.0-windows\Extendify.dll
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\bin\Debug\net6.0-windows\Extendify.pdb
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.dll
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\refint\Extendify.dll
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.pdb
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.genruntimeconfig.cache
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\ref\Extendify.dll
