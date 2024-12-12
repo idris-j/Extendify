@@ -13,3 +13,4 @@ C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\E
 C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.genruntimeconfig.cache
 C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\ref\Extendify.dll
 C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\Debug\net6.0-windows\Extendify.sourcelink.json
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\bin\Debug\net6.0-windows\Assets\Icons\extendify.ico

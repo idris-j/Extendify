@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Extendify")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8cb06891c424f4299cf3af5ef6417d48548e1ea9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4806cfa09fdb70dec137eb756afb819af8c33997")]
 [assembly: System.Reflection.AssemblyProductAttribute("Extendify")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Extendify")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
