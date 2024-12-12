@@ -12,6 +12,7 @@ A lightweight Windows taskbar enhancement utility that provides a sleek, customi
 - Semi-transparent modern design
 - Draggable for positioning
 - Automatic application detection
+- Hi-res Screen recording functionality
 
 ## Building from Source
 
