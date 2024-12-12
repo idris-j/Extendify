@@ -4,6 +4,9 @@ A lightweight Windows taskbar enhancement utility that provides a sleek, customi
 
 ![image](https://github.com/user-attachments/assets/e8b35228-bdc5-45b5-9404-13dac0ac9382)
 
+![image](https://github.com/user-attachments/assets/1f4fa79d-a274-4106-9003-e9a471d61165)
+
+
 
 ## Features
 
@@ -49,5 +52,3 @@ License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 
-
-![image](https://github.com/user-attachments/assets/1f4fa79d-a274-4106-9003-e9a471d61165)
