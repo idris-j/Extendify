@@ -10,7 +10,7 @@ A lightweight Windows taskbar enhancement utility that provides a sleek, customi
 - Floating secondary taskbar with running applications
 - Smooth window switching
 - Semi-transparent modern design
-- Drag-and-drop positioning
+- Draggable for positioning
 - Automatic application detection
 
 ## Building from Source
