@@ -2,6 +2,9 @@
 
 A lightweight Windows taskbar enhancement utility that provides a sleek, customizable secondary taskbar for efficient application management.
 
+![image](https://github.com/user-attachments/assets/e8b35228-bdc5-45b5-9404-13dac0ac9382)
+
+
 ## Features
 
 - Floating secondary taskbar with running applications
