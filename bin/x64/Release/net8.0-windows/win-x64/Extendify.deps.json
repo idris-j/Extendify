@@ -1,0 +1,49 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {},
+    ".NETCoreApp,Version=v8.0/win-x64": {
+      "Extendify/1.0.0": {
+        "dependencies": {
+          "ScreenRecorderLib": "6.4.0",
+          "ScreenRecorderLib.Reference": "1.0.9093.16073"
+        },
+        "runtime": {
+          "Extendify.dll": {}
+        }
+      },
+      "ScreenRecorderLib/6.4.0": {},
+      "ScreenRecorderLib.Reference/1.0.9093.16073": {
+        "runtime": {
+          "ScreenRecorderLib.dll": {
+            "assemblyVersion": "1.0.9093.16073",
+            "fileVersion": "6.4.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Extendify/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ScreenRecorderLib/6.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LWn9mvJdidVYVwRPzLbGy5Ba5aIplxYfMvwL0aC+7HPdiBomiWlrC3BqsBW8oAdPBECETVT5lBCFntsaiH8DOw==",
+      "path": "screenrecorderlib/6.4.0",
+      "hashPath": "screenrecorderlib.6.4.0.nupkg.sha512"
+    },
+    "ScreenRecorderLib.Reference/1.0.9093.16073": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

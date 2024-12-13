@@ -1,0 +1,6 @@
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\x64\Release\net8.0-windows\Extendify.csproj.AssemblyReference.cache
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\x64\Release\net8.0-windows\Extendify.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\x64\Release\net8.0-windows\Extendify.AssemblyInfoInputs.cache
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\x64\Release\net8.0-windows\Extendify.AssemblyInfo.cs
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\x64\Release\net8.0-windows\Extendify.csproj.CoreCompileInputs.cache
+C:\Users\JJ.ehub247\Documents\Extensify\src\Extendify\obj\x64\Release\net8.0-windows\Extendify.sourcelink.json

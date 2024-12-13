@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using Timer = System.Windows.Forms.Timer;
+using System.IO;
+using System.Threading;
 
 namespace Extendify
 {
@@ -25,12 +27,29 @@ namespace Extendify
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
 
+        private Button recordButton;
+        private Button pauseButton;
+        private Button stopButton;
+        private Button muteButton;
+        private Label timerLabel;
+        private Timer recordingTimer;
+        private bool isRecording = false;
+        private bool isPaused = false;
+        private bool isMuted = false;
+        private TimeSpan recordingDuration = TimeSpan.Zero;
+        private ScreenRecorder screenRecorder;
+        private ContextMenuStrip contextMenu;
+        private bool isMicMuted = false;
+        private Button micMuteButton;
+
         public TaskbarForm()
         {
             InitializeComponent();
+            InitializeRecordingControls();
             SetupTimer();
             RefreshApplications(null, null);
             this.MouseDown += TaskbarForm_MouseDown;
+            InitializeContextMenu();
         }
 
         private void TaskbarForm_MouseDown(object sender, MouseEventArgs e)
@@ -63,19 +82,22 @@ namespace Extendify
 
             flowPanel = new FlowLayoutPanel();
             flowPanel.Dock = DockStyle.Fill;
-            flowPanel.AutoScroll = true;
+            flowPanel.AutoScroll = false;
             flowPanel.WrapContents = false;
             flowPanel.FlowDirection = FlowDirection.LeftToRight;
             flowPanel.BackColor = Color.FromArgb(20, 20, 20);
             flowPanel.MouseDown += TaskbarForm_MouseDown;
             flowPanel.Cursor = Cursors.SizeAll;
+
+            contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("Exit", null, (s, e) => Application.Exit());
+            flowPanel.ContextMenuStrip = contextMenu;
             
             this.Controls.Add(flowPanel);
 
-            // Add signature label
             Label signatureLabel = new Label
             {
-                Text = "Creator: Idris Jimoh",
+                Text = "Idris",
                 Font = new Font("Segoe Script", 8, FontStyle.Italic),
                 ForeColor = Color.FromArgb(150, 150, 150),
                 AutoSize = true,
@@ -97,13 +119,11 @@ namespace Extendify
 
         private void RefreshApplications(object sender, EventArgs e)
         {
-            // Get current applications
             Process[] processes = Process.GetProcesses();
             var currentHandles = flowPanel.Controls.Cast<PictureBox>()
                 .Select(pb => (IntPtr)pb.Tag)
                 .ToList();
 
-            // Find new windows to add
             foreach (Process p in processes)
             {
                 if (!string.IsNullOrEmpty(p.MainWindowTitle) && 
@@ -133,7 +153,6 @@ namespace Extendify
                 }
             }
 
-            // Remove closed windows
             var activeHandles = processes
                 .Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && 
                            p.MainWindowHandle != IntPtr.Zero && 
@@ -170,6 +189,9 @@ namespace Extendify
 
             try
             {
+                if (process.ProcessName.Contains("WhatsApp", StringComparison.OrdinalIgnoreCase))
+                    return false;
+
                 return systemProcesses.Any(sp => 
                     process.ProcessName.Contains(sp, StringComparison.OrdinalIgnoreCase) ||
                     process.MainWindowTitle.Contains(sp, StringComparison.OrdinalIgnoreCase));
@@ -214,6 +236,232 @@ namespace Extendify
             {
                 NativeMethods.ShowWindow(handle, NativeMethods.SW_SHOW);
             }
+        }
+
+        private void InitializeRecordingControls()
+        {
+            Panel recordingPanel = new Panel
+            {
+                Height = 35,
+                Width = 250,
+                BackColor = Color.FromArgb(30, 30, 30),
+                Dock = DockStyle.Right
+            };
+
+            FlowLayoutPanel buttonFlow = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                Padding = new Padding(5),
+                BackColor = Color.FromArgb(30, 30, 30)
+            };
+
+            void StyleButton(Button btn)
+            {
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.FlatAppearance.BorderSize = 0;
+                btn.BackColor = Color.FromArgb(30, 30, 30);
+                btn.Size = new Size(32, 32);
+                btn.Font = new Font("Segoe UI", 12);
+                btn.Cursor = Cursors.Hand;
+
+                btn.MouseEnter += (s, e) => {
+                    btn.BackColor = Color.FromArgb(45, 45, 45);
+                };
+                btn.MouseLeave += (s, e) => {
+                    btn.BackColor = Color.FromArgb(30, 30, 30);
+                };
+            }
+
+            recordButton = new Button
+            {
+                Text = "⏺",
+                ForeColor = Color.White
+            };
+            StyleButton(recordButton);
+            recordButton.Click += StartRecording;
+
+            pauseButton = new Button
+            {
+                Text = "⏸",
+                ForeColor = Color.White,
+                Enabled = false
+            };
+            StyleButton(pauseButton);
+            pauseButton.Click += PauseRecording;
+
+            stopButton = new Button
+            {
+                Text = "⏹",
+                ForeColor = Color.White,
+                Enabled = false
+            };
+            StyleButton(stopButton);
+            stopButton.Click += StopRecording;
+
+            micMuteButton = new Button
+            {
+                Text = "🎤",
+                ForeColor = Color.White
+            };
+            StyleButton(micMuteButton);
+            micMuteButton.Click += ToggleMicrophone;
+
+            muteButton = new Button
+            {
+                Text = "🔊",
+                ForeColor = Color.White
+            };
+            StyleButton(muteButton);
+            muteButton.Click += ToggleMute;
+
+            timerLabel = new Label
+            {
+                Text = "00:00:00",
+                ForeColor = Color.White,
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10),
+                Padding = new Padding(5, 8, 5, 0)
+            };
+
+            buttonFlow.Controls.AddRange(new Control[] { 
+                recordButton, 
+                pauseButton, 
+                stopButton, 
+                timerLabel 
+            });
+
+            recordingPanel.Controls.Add(buttonFlow);
+            this.Controls.Add(recordingPanel);
+
+            recordingTimer = new Timer
+            {
+                Interval = 1000
+            };
+            recordingTimer.Tick += UpdateRecordingTime;
+
+            screenRecorder = new ScreenRecorder();
+        }
+
+        private void ToggleMicrophone(object sender, EventArgs e)
+        {
+            isMicMuted = !isMicMuted;
+            micMuteButton.Text = isMicMuted ? "🎤⃠" : "🎤";
+            micMuteButton.ForeColor = isMicMuted ? Color.Red : Color.White;
+            screenRecorder.ToggleMicrophone(isMicMuted);
+        }
+
+        private bool CheckDependencies()
+        {
+            string[] requiredDlls = new string[] 
+            {
+                "NAudio.Wasapi.dll",
+                "NAudio.WinMM.dll"
+            };
+
+            string applicationPath = AppDomain.CurrentDomain.BaseDirectory;
+            foreach (string dll in requiredDlls)
+            {
+                if (!File.Exists(Path.Combine(applicationPath, dll)))
+                {
+                    MessageBox.Show($"Required dependency {dll} is missing. Please reinstall the application.", 
+                                  "Missing Dependencies", 
+                                  MessageBoxButtons.OK, 
+                                  MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void StartRecording(object sender, EventArgs e)
+        {
+            try 
+            {
+                if (!CheckDependencies())
+                {
+                    return;
+                }
+
+                if (!isRecording)
+                {
+                    string recordingsPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        "Extensify",
+                        "Recordings"
+                    );
+                    Directory.CreateDirectory(recordingsPath);
+
+                    isRecording = true;
+                    recordButton.Enabled = false;
+                    pauseButton.Enabled = true;
+                    stopButton.Enabled = true;
+                    recordingTimer.Start();
+
+                    Screen primaryScreen = Screen.PrimaryScreen;
+                    int screenWidth = primaryScreen.Bounds.Width;
+                    int screenHeight = primaryScreen.Bounds.Height;
+                    screenRecorder.StartRecording(recordingsPath, screenWidth, screenHeight);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to start recording: {ex.Message}", 
+                              "Recording Error", 
+                              MessageBoxButtons.OK, 
+                              MessageBoxIcon.Error);
+                StopRecording(null, null);
+            }
+        }
+
+        private void PauseRecording(object sender, EventArgs e)
+        {
+            isPaused = !isPaused;
+            pauseButton.Text = isPaused ? "▶" : "⏸";
+            if (isPaused)
+            {
+                recordingTimer.Stop();
+                screenRecorder.PauseRecording();
+            }
+            else
+            {
+                recordingTimer.Start();
+                screenRecorder.ResumeRecording();
+            }
+        }
+
+        private void StopRecording(object sender, EventArgs e)
+        {
+            isRecording = false;
+            isPaused = false;
+            recordButton.Enabled = true;
+            pauseButton.Enabled = false;
+            stopButton.Enabled = false;
+            recordingTimer.Stop();
+            recordingDuration = TimeSpan.Zero;
+            timerLabel.Text = "00:00:00";
+
+            screenRecorder.StopRecording();
+        }
+
+        private void ToggleMute(object sender, EventArgs e)
+        {
+            isMuted = !isMuted;
+            muteButton.Text = isMuted ? "🔇" : "🔊";
+            screenRecorder.ToggleMute();
+        }
+
+        private void UpdateRecordingTime(object sender, EventArgs e)
+        {
+            recordingDuration = recordingDuration.Add(TimeSpan.FromSeconds(1));
+            timerLabel.Text = recordingDuration.ToString(@"hh\:mm\:ss");
+        }
+
+        private void InitializeContextMenu()
+        {
+            contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("Exit", null, (s, e) => Application.Exit());
         }
     }
 }
